@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}
+
+        {% endblock title %}
+    </title>
+
+    <!-- BS CSS -->
+    <link rel="stylesheet" href="{% static 'css\bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css\main.css' %}">
+
+</head>
+
+
+<body>
+
+    <nav class="navbar navbar-dark bg-dark justify-content-between">
+
+        <div class="container-fluid">
+            <a href="{% url 'article_list' %}" class="navbar-brand">Newspaper</a>
+            <form class="form-inline">
+                <div class="right-nav-content">
+                    
+
+
+                    {% if user.is_authenticated %}
+                    <button style="text-transform: capitalize;" type="button" class="btn btn-info">Hi {{ user.username }}</button>
+                    <a href="{% url 'logout' %}"></a>
+                    {% comment %} <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'password_change'%}">Change password</a>
+                        <div class="dropdown-divider"></div>
+                        <button type="button" class="btn btn-info"><a class="" href="{% url 'logout' %}">
+                            Log Out</a></button>
+                        
+                    </div> {% endcomment %}
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Menu
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                        </div>
+                    </div>
+
+                    {% else %}
+                    
+                    <form class="form-inline ml-auto">
+                        <a href="{% url 'login' %}" class="btn btn-outline-secondary">
+                            Log In</a>
+                        <a href="{% url 'signup' %}" class="btn btn-primary ml-2">
+                            Sign up</a>
+                    </form>
+                    {% endif %}
+                    
+
+                    {% comment %} If user is logged {% endcomment %}
+                    
+
+                </div>
+            </form>
+        </div>
+    </nav>
+
+    {% if request.resolver_match.url_name == "article_list" %}
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            
+            {% if user.is_authenticated %}
+                <h1 class="display-4">Welcome {{ user.username }}</h1>
+            <a href="{% url 'article_new' %}">
+                <button class="btn btn-success">Create an article</button>
+            </a>
+            {% else %}
+                <h4 class="heading">Read News Articles or <a href="{% url 'login' %}">Login</a>/<a href="{% url 'signup' %}">Register</a> to create one!!</h4>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+
+    {% block content %}
+    {% endblock content %}
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="{% static 'bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>
